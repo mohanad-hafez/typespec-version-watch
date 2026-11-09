@@ -1,6 +1,0 @@
-{
-  "name": "@typespec/test-typespec-lib",
-  "type": "module",
-  "main": "lib.txt",
-  "tspMain": "lib.txt"
-}

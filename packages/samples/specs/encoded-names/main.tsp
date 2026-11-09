@@ -1,1 +1,0 @@
-import "./encoded-names.tsp";

@@ -1,8 +1,0 @@
-parameters:
-  custom-dir:
-    default: default-value
-
-emit:
-  - ./emitter.js
-
-output-dir: "{project-root}/tsp-output/{custom-dir}"

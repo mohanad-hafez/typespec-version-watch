@@ -1,4 +1,0 @@
-model 
-  Foo {
-  badFormat: string;
-}

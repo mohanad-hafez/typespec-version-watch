@@ -1,2 +1,0 @@
--e ./generator
--r ../eng/scripts/ci/dev_requirements.txt

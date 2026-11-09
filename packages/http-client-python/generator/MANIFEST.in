@@ -1,1 +1,0 @@
-recursive-include pygen/codegen/templates *.jinja2

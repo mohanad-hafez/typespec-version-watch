@@ -1,6 +1,0 @@
-# Template installing browsers
-steps:
-  - script: |
-      sudo dpkg --configure -a
-      npx playwright install --with-deps
-    displayName: Install playwright browsers

@@ -1,8 +1,0 @@
-{
-  "itemPropertySegments": ["items"],
-  "pageSizeParameterSegments": ["maxpagesize"],
-  "nextLink": {
-    "responseSegments": ["next"],
-    "responseLocation": "Body"
-  }
-}

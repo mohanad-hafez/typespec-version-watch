@@ -1,3 +1,0 @@
-namespace MyTypeSpecLibrary {
-  model Test {}
-}

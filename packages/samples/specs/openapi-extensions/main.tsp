@@ -1,1 +1,0 @@
-import "./openapi-extensions.tsp";

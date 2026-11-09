@@ -1,6 +1,0 @@
-emit:
-  - "@typespec/http-client-js"
-
-options:
-  "@typespec/http-client-js":
-    emitter-output-dir: "{output-dir}"

@@ -1,0 +1,53 @@
+name: Matched TCGC version decision
+on:
+  push:
+    branches: [matched-tcgc-watch-01]
+permissions:
+  contents: read
+jobs:
+  component:
+    if: github.repository == 'mohanad-hafez/typespec-version-watch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    permissions:
+      contents: read
+      copilot-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [tcgc]
+        arm: [agent, script]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install pinned Copilot
+        if: matrix.arm == 'agent'
+        run: npm install --global @github/copilot@1.0.108
+      - name: Run component
+        env:
+          ARM: ${{ matrix.arm }}
+          CASE: ${{ matrix.case }}
+          GITHUB_TOKEN: ${{ matrix.arm == 'agent' && github.token || '' }}
+        run: |
+          mkdir -p evidence
+          date +%s%N > evidence/start-ns
+          trap 'date +%s%N > evidence/end-ns' EXIT
+          if [ "$ARM" = script ]; then
+            node tcgc-arm.mjs
+          else
+            copilot --version > evidence/version.txt
+            node -e 'const c=process.cwd(); console.log(JSON.stringify({mcpServers:{fixture:{type:"local",command:"node",args:[c+"/component_fixture.cjs",c+"/"+process.env.CASE+".json",c+"/evidence/tools.jsonl"],tools:["*"]}}}))' > fixture-mcp.json
+            timeout 180s copilot --disable-builtin-mcps --disable-client-telemetry \
+              --additional-mcp-config=@fixture-mcp.json \
+              --available-tools=fixture-read_input,fixture-publish_result \
+              --allow-tool=fixture --no-ask-user --no-color --silent \
+              --prompt "$(cat "$CASE-prompt.md")" > evidence/output.txt 2> evidence/diagnostics.txt
+            node tcgc-arm.mjs
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ${{ matrix.case }}-${{ matrix.arm }}
+          path: evidence/
+          retention-days: 7

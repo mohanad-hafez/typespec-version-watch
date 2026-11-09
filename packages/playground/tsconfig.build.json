@@ -1,6 +1,0 @@
-// tsconfig for building the playground
-{
-  "extends": "./tsconfig.json",
-  "include": ["src/**/*.{ts,tsx}", ".storybook/**/*.{ts,tsx}", "definitions/*.d.ts"],
-  "references": [{ "path": "../compiler/tsconfig.build.json" }]
-}
